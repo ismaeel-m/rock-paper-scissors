@@ -1,6 +1,7 @@
 let rock = 0;
 let paper = 1;
 let scissors = 2;
+
 let humanScore = 0;
 let computerScore = 0;
 
@@ -20,15 +21,21 @@ function getComputerChoice(){
 }
 
 function getHumanChoice(){
-    return prompt("Enter 'rock', 'paper', or 'scissors'.");
-}
 
+    let humanInput = " ";
+
+    while(!["rock", "paper", "scissors"].includes(humanInput.toLowerCase())){
+        humanInput = prompt("Enter 'rock', 'paper', or 'scissors'.");
+    }
+
+    return humanInput;
+}
 
 function playRound(humanChoice, computerChoice){
 
     humanChoice = humanChoice.toLowerCase();
-    console.log(humanChoice);
-    console.log(computerChoice);
+    console.log("You chose: " + humanChoice);
+    console.log("Computer chose: " + computerChoice);
     if(humanChoice == computerChoice){
         console.log("It's a tie! No point awarded.");
     } else if (
@@ -44,8 +51,29 @@ function playRound(humanChoice, computerChoice){
     }
 }
 
+function playGame(){
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
+    for(let i =0; i < 5; i++){
 
-playRound(humanSelection, computerSelection);
+        let humanSelection = getHumanChoice();
+        let computerSelection = getComputerChoice();
+        playRound(humanSelection, computerSelection);
+
+    }
+
+    console.log("The final scores after 5 rounds are:\nYour Score: " + humanScore + "\nComputer Score: " + computerScore);
+
+    if(humanScore == computerScore){
+        console.log("It was a tie!");
+    } else if (humanScore > computerScore){
+        console.log("You won!");
+    } else{
+        console.log("Computer won!");
+    }
+
+    humanScore = 0;
+    computerScore = 0;
+
+}
+
+playGame();
