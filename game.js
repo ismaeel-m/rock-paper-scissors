@@ -3,7 +3,7 @@ let paper = 1;
 let scissors = 2;
 
 function getComputerChoice(){
-    randomNumber = Math.floor(Math.random() * 3);
+    let randomNumber = Math.floor(Math.random() * 3);
 
     switch (randomNumber){
         case 0:
@@ -17,4 +17,10 @@ function getComputerChoice(){
     }
 }
 
+function getHumanChoice(){
+    return prompt("Enter 'rock', 'paper', or 'scissors'.");
+}
+
+
+console.log(getHumanChoice());
 console.log(getComputerChoice());
