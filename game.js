@@ -1,9 +1,39 @@
-let rock = 0;
-let paper = 1;
-let scissors = 2;
-
 let humanScore = 0;
 let computerScore = 0;
+let gameCount = 0;
+const body = document.querySelector('body');
+const resultDiv = document.querySelector('#result');
+const humanTextScore = document.querySelector('#human-score');
+const computerTextScore = document.querySelector('#computer-score');
+
+function getHumanChoice(e){
+
+    let target = e.target;
+    let humanSelection = '';
+
+    switch(target.id){
+        case 'rock':
+            humanSelection = target.textContent;
+            break;
+        case 'paper':
+            humanSelection = target.textContent;
+            break;
+        case 'scissors':
+            humanSelection = target.textContent;
+            break;
+    }
+
+    if(humanSelection != ''){
+        let computerSelection = getComputerChoice();
+        playRound(humanSelection, computerSelection);
+    }
+    if(humanScore == 5 || computerScore == 5){
+        body.removeEventListener('click', getHumanChoice);
+        endGame();
+    }
+
+
+}
 
 function getComputerChoice(){
     let randomNumber = Math.floor(Math.random() * 3);
@@ -20,60 +50,63 @@ function getComputerChoice(){
     }
 }
 
-function getHumanChoice(){
-
-    let humanInput = " ";
-
-    while(!["rock", "paper", "scissors"].includes(humanInput.toLowerCase())){
-        humanInput = prompt("Enter 'rock', 'paper', or 'scissors'.");
-    }
-
-    return humanInput;
-}
-
 function playRound(humanChoice, computerChoice){
 
     humanChoice = humanChoice.toLowerCase();
-    console.log("You chose: " + humanChoice);
-    console.log("Computer chose: " + computerChoice);
+    let result = "";
+    
     if(humanChoice == computerChoice){
-        console.log("It's a tie! No point awarded.");
+        result = "It's a tie! No point awarded.";
     } else if (
         (humanChoice == "rock" && computerChoice == "scissors") || 
         (humanChoice == "paper" && computerChoice == "rock") || 
         (humanChoice == "scissors" && computerChoice == "paper")
     ){
-        console.log("You win! " + humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1) + " beats " + computerChoice + "!");
+        result = "You win! " + humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1) + " beats " + computerChoice + "!";
         humanScore++;
     } else{
-        console.log("You lose! " + computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1) + " beats " + humanChoice + "!");
+        result = "You lose! " + computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1) + " beats " + humanChoice + "!";
         computerScore++;
     }
+
+    let returnArr = [ "---", "You chose: " + humanChoice, "Computer chose: " + computerChoice, result];
+    
+    returnArr.forEach((item) =>{
+        let newP = document.createElement("p");
+        newP.textContent = item;
+        resultDiv.appendChild(newP);
+    });
+
+    humanTextScore.textContent = humanScore;
+    computerTextScore.textContent = computerScore;
+
+    gameCount++;
+    console.log(gameCount);
 }
 
-function playGame(){
+function endGame(){
 
-    for(let i =0; i < 5; i++){
-
-        let humanSelection = getHumanChoice();
-        let computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-
-    }
-
-    console.log("The final scores after 5 rounds are:\nYour Score: " + humanScore + "\nComputer Score: " + computerScore);
+    let finalResult = '';
 
     if(humanScore == computerScore){
-        console.log("It was a tie!");
+        finalResult = "It was a tie!";
     } else if (humanScore > computerScore){
-        console.log("You won!");
+        finalResult = "You won!";
     } else{
-        console.log("Computer won!");
+        finalResult = "Computer won!";
     }
+
+    let returnArr = [ "---", "The final scores are:", "Your Score: " + humanScore, "Computer Score: " + computerScore, finalResult];
+    
+    returnArr.forEach((item) =>{
+        let newP = document.createElement("p");
+        newP.textContent = item;
+        resultDiv.appendChild(newP);
+    });
 
     humanScore = 0;
     computerScore = 0;
 
 }
 
-playGame();
+body.addEventListener('click', getHumanChoice);
